@@ -21,8 +21,9 @@ export async function setSessionCookie(idToken: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Adjust for cross-origin //
   });
+  console.log("Session cookie set in browser."); //
 }
 
 export async function signUp(params: SignUpParams) {
@@ -31,20 +32,23 @@ export async function signUp(params: SignUpParams) {
   try {
     // check if user exists in db
     const userRecord = await db.collection("users").doc(uid).get();
-    if (userRecord.exists)
+    if (userRecord.exists){
+      console.log("User already exists in Firestore for UID:", uid); //
       return {
         success: false,
         message: "User already exists. Please sign in.",
       };
-
+    }
+     
     // save user to db
+    console.log("Saving user to Firestore with UID:", uid); //
     await db.collection("users").doc(uid).set({
       name,
       email,
       // profileURL,
       // resumeURL,
     });
-
+    console.log("User saved to Firestore successfully."); //
     return {
       success: true,
       message: "Account created successfully. Please sign in.",
@@ -78,10 +82,12 @@ export async function signIn(params: SignInParams) {
         message: "User does not exist. Create an account.",
       };
 
+    console.log("Setting session cookie..."); //
     await setSessionCookie(idToken);
+    console.log("Session cookie set successfully.");//
   } catch (error: any) {
     console.log(error);
-
+    console.error("Error in signIn:", error); //
     return {
       success: false,
       message: "Failed to log into account. Please try again.",
@@ -103,25 +109,31 @@ export async function getCurrentUser(): Promise<User | null> {
   const sessionCookie = cookieStore.get("session")?.value;
 
   console.log("Session cookie: ", sessionCookie);
-  if (!sessionCookie) return null;
+  if (!sessionCookie) {
+    console.log("No session cookie found.");//
+    return null;
+  }
 
   try {
     const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
-
+    console.log("Decoded claims:", decodedClaims); //
     // get user info from db
     const userRecord = await db
       .collection("users")
       .doc(decodedClaims.uid)
       .get();
-    if (!userRecord.exists) return null;
-
+    if (!userRecord.exists) {
+      console.log("User not found in Firestore for UID:", decodedClaims.uid); //
+      return null;
+    }
+    console.log("User found in Firestore:", userRecord.data()); //
     return {
       ...userRecord.data(),
       id: userRecord.id,
     } as User;
   } catch (error) {
-    console.log(error);
-
+    //console.log(error);
+    console.error("Error verifying session cookie:", error); //
     // Invalid or expired session
     return null;
   }
