@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/InterviewCard";
-
+import LogoutButton from "@/components/LogoutButton";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
   getInterviewsByUserId,
@@ -29,7 +29,8 @@ async function Home() {
 
   return (
     <>
-      <section className="card-cta">
+      <LogoutButton></LogoutButton>
+        <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Get Interview-Ready with AI-Powered Practice & Feedback</h2>
           <p className="text-lg">

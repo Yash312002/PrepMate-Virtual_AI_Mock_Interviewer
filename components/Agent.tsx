@@ -63,6 +63,8 @@ const Agent = ({
 
     const onError = (error: Error) => {
       console.log("Error:", error);
+      alert("Meeting ended in error: " + error.message);
+      setCallStatus(CallStatus.FINISHED);
     };
 
     vapi.on("call-start", onCallStart);
@@ -105,7 +107,7 @@ const Agent = ({
       }
     };
 
-    if (callStatus === CallStatus.FINISHED) {
+    if (callStatus === CallStatus.FINISHED && messages.length>0) {
       if (type === "generate") {
         router.push("/");
       } else {
