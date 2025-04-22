@@ -6,7 +6,7 @@ import InterviewCard from "@/components/InterviewCard";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
   getInterviewsByUserId,
-  getLatestInterviews,
+  getInterviewsForAllUsers
 } from "@/lib/actions/general.action";
 import { redirect } from "next/navigation";
 
@@ -20,7 +20,7 @@ async function Home() {
 
   const [userInterviews, allInterview] = await Promise.all([
     getInterviewsByUserId(user?.id!),
-    getLatestInterviews({ userId: user?.id! }),
+    getInterviewsForAllUsers(),
   ]);
 
   const hasPastInterviews = userInterviews?.length! > 0;
@@ -97,3 +97,5 @@ async function Home() {
 }
 
 export default Home;
+
+
