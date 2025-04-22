@@ -109,6 +109,19 @@ export async function getLatestInterviews(
   })) as Interview[];
 }
 
+export async function getInterviewsForAllUsers(): Promise<Interview[] | null>{
+    const interviews = await db
+    .collection("interviews")
+    .where("userId", "==", "9SGh3us3oTOEwJf5xQwKWU7Fs4p2")
+    .orderBy("createdAt", "desc")
+    .get();
+
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Interview[];
+}
+
 export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {

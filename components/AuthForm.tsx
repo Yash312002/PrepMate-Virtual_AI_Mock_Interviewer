@@ -94,8 +94,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         }, 200); 
       }
     } catch (error) {
-      console.log(error);
-      toast.error(`There was an error: ${error}`);
+      toast.error(`Wrong credentials. Please try again`);
     }
   };
 
