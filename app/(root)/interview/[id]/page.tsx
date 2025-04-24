@@ -10,12 +10,13 @@ import {
 } from "@/lib/actions/general.action";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
+import Link from "next/link"; // Add this import 
+import { ArrowLeft } from "lucide-react";
 
 const InterviewDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
-
   const user = await getCurrentUser();
-
+  
   const interview = await getInterviewById(id);
   if (!interview) redirect("/");
 
@@ -24,8 +25,21 @@ const InterviewDetails = async ({ params }: RouteParams) => {
     userId: user?.id!,
   });
 
+  const profileImageUrl = user?.profileURL 
+  ? `${process.env.NEXT_PUBLIC_APP_URL}${user.profileURL}`
+  : '';
+  
   return (
     <>
+      <div className="mb-6">
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
       <div className="flex flex-row gap-4 justify-between">
         <div className="flex flex-row gap-4 items-center max-sm:flex-col">
           <div className="flex flex-row gap-4 items-center">
@@ -54,6 +68,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
         type="interview"
         questions={interview.questions}
         feedbackId={feedback?.id}
+        profileImage={profileImageUrl}
       />
     </>
   );
