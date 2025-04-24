@@ -12,10 +12,10 @@ import { redirect } from "next/navigation";
 
 async function Home() {
   const user = await getCurrentUser();
-  console.log("User in Home page:", user); //
+  console.log("User in Home page:", user); 
   if (!user) {
-    console.log("No user found, redirecting to /sign-in"); //
-    redirect("/sign-in"); // if not logged in, send to login
+    console.log("No user found, redirecting to /sign-in"); 
+    redirect("/sign-in"); 
   }
 
   const [userInterviews, allInterview] = await Promise.all([
