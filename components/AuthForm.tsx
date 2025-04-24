@@ -94,7 +94,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         }, 200); 
       }
     } catch (error) {
-      toast.error(`Wrong credentials. Please try again`);
+      toast.error(`Password should be minimum 6 characters long`);
     }
   };
 
@@ -147,13 +147,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
           </form>
         </Form>
         
-        {isSignIn && (
-          <p className="text-center text-sm">
-            <Link href="/forgot-password" className="text-user-primary font-bold">
-              Forgot Password?
-            </Link>
-          </p>
-        )}
 
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
