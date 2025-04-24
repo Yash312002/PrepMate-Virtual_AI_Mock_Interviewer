@@ -94,7 +94,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         }, 200); 
       }
     } catch (error) {
-      toast.error(`Wrong credentials. Please try again`);
+      toast.error(`Password should be minimum 6 characters long`);
     }
   };
 

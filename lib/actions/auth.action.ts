@@ -4,7 +4,7 @@ import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
 
 // Session duration (1 week)
-const SESSION_DURATION = 60 * 60 * 24 * 7;
+const SESSION_DURATION = 60 * 60;
 
 // Set session cookie
 export async function setSessionCookie(idToken: string) {
@@ -110,31 +110,37 @@ export async function getCurrentUser(): Promise<User | null> {
 
   console.log("Session cookie: ", sessionCookie);
   if (!sessionCookie) {
-    console.log("No session cookie found.");//
+    console.log("No session cookie found.");
     return null;
   }
 
   try {
     const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
-    console.log("Decoded claims:", decodedClaims); //
-    // get user info from db
+    console.log("Decoded claims:", decodedClaims);
+    
     const userRecord = await db
       .collection("users")
       .doc(decodedClaims.uid)
       .get();
+      
     if (!userRecord.exists) {
-      console.log("User not found in Firestore for UID:", decodedClaims.uid); //
+      console.log("User not found in Firestore for UID:", decodedClaims.uid);
       return null;
     }
-    console.log("User found in Firestore:", userRecord.data()); //
+
+    const userData = userRecord.data();
+    console.log("User found in Firestore:", userData);
+    
     return {
-      ...userRecord.data(),
+      ...userData,
       id: userRecord.id,
+      name: userData?.name || decodedClaims.name,
+      email: userData?.email || decodedClaims.email,
+      profileURL: userData?.profileURL || null,
+      resumeURL: userData?.resumeURL || null
     } as User;
   } catch (error) {
-    //console.log(error);
-    console.error("Error verifying session cookie:", error); //
-    // Invalid or expired session
+    console.error("Error verifying session cookie:", error);
     return null;
   }
 }
@@ -143,4 +149,20 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function isAuthenticated() {
   const user = await getCurrentUser();
   return !!user;
+}
+
+export const updateUserProfile = async (userId: string, data: { profileURL?: string, resumeURL?: string }) => {
+  try {
+    console.log('Updating user profile:', { userId, data }); // Add logging
+    const userRef = db.collection('users').doc(userId);
+    await userRef.update({
+      ...data,
+      updatedAt: new Date().toISOString()
+    });
+    console.log('Profile updated successfully'); // Add logging
+    return true;
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    return false;
+  }
 }

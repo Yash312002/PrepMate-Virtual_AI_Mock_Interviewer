@@ -3,7 +3,10 @@ import { getCurrentUser } from "@/lib/actions/auth.action";
 
 const Page = async () => {
   const user = await getCurrentUser();
-
+  
+  const profileImageUrl = user?.profileURL 
+  ? `${process.env.NEXT_PUBLIC_APP_URL}${user.profileURL}`
+  : '';
   return (
     <>
       <h3>Interview generation</h3>
@@ -11,7 +14,7 @@ const Page = async () => {
       <Agent
         userName={user?.name!}
         userId={user?.id}
-        profileImage={user?.profileURL}
+        profileImage= {profileImageUrl}
         type="generate"
       />
     </>
