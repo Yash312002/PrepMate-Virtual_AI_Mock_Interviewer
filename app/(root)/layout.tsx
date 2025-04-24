@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
-
+import ProfileDropdown from "@/components/ProfileDropdown";
 import { isAuthenticated } from "@/lib/actions/auth.action";
 import LogoutButton from "@/components/LogoutButton";
 
@@ -18,7 +18,8 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           <h2 className="text-primary-100">PrepMate</h2>
         </Link>
 
-        <LogoutButton></LogoutButton>
+        
+        <ProfileDropdown />
       </nav>
 
       {children}
