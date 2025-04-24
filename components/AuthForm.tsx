@@ -146,6 +146,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
             </Button>
           </form>
         </Form>
+        
+        {isSignIn && (
+          <p className="text-center text-sm">
+            <Link href="/forgot-password" className="text-user-primary font-bold">
+              Forgot Password?
+            </Link>
+          </p>
+        )}
 
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
