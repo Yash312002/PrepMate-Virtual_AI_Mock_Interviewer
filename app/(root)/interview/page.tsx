@@ -6,7 +6,7 @@ const Page = async () => {
   
   const profileImageUrl = user?.profileURL 
   ? `${process.env.NEXT_PUBLIC_APP_URL}/${user.profileURL}`
-  : ' /user-avatar.png';
+  : '/user-avatar.png';
   return (
     <>
       <h3>Interview generation</h3>
