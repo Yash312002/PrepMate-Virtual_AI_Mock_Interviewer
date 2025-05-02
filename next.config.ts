@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Enable server components
+    serverComponents: true,
+    // Enable concurrent features
+    concurrentFeatures: true,
+    // Enable streaming
+    streaming: true
+  },
+  swcMinify: true,
+  reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
   },

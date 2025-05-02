@@ -170,7 +170,7 @@ const Agent = ({
         <div className="card-border">
           <div className="card-content">
             <Image
-              src={profileImage || '/default-avatar.png'}
+              src={profileImage || '/user-avatar.png'}
               alt="profile-image"
               width={539}
               height={539}
