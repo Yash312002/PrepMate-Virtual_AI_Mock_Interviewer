@@ -5,8 +5,8 @@ const Page = async () => {
   const user = await getCurrentUser();
   
   const profileImageUrl = user?.profileURL 
-  ? `${process.env.NEXT_PUBLIC_APP_URL}${user.profileURL}`
-  : '';
+  ? `${process.env.NEXT_PUBLIC_APP_URL}/${user.profileURL}`
+  : ' /user-avatar.png';
   return (
     <>
       <h3>Interview generation</h3>
