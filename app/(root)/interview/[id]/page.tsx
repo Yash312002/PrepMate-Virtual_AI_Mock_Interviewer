@@ -27,7 +27,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
 
   const profileImageUrl = user?.profileURL 
   ? `${process.env.NEXT_PUBLIC_APP_URL}${user.profileURL}`
-  : '';
+  : '/user-avatar.png';
   
   return (
     <>
